@@ -9,7 +9,14 @@ GIAI
 
     .. automethod:: asset_reference
 
-    .. automethod:: tag_size
+    .. method:: tag_size
+
+        Set the size for the tag.
+
+        :param tag_size: Tag size in bits. Defaults to ``SIZE_96``.
+        :type tag_size: int
+
+        :raises AttributeError: Invalid tag size specified.
 
         :return: The GIAI tag object.
         :rtype: :class:`epc.schemes.GIAI`

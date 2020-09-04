@@ -78,8 +78,8 @@ def decode_epc(hex_string):
     :param epc: Hexadecimal EPC tag data
     :type epc: str
 
-    :raises KeyError: Unable to determine tag encoding.
-    :raises LookupError: Scheme not implemented for tag.
+    :raises NotImplementedError: Unable to determine tag encoding.
+    :raises NotImplementedError: Scheme not implemented for tag.
 
     :returns: EPC tag object
     :rtype: object
