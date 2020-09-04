@@ -1,6 +1,8 @@
 EPC Encoding Utils
 ------------------
 
+[![Documentation Status](https://readthedocs.org/projects/epcpy-tools/badge/?version=latest)](https://epcpy-tools.readthedocs.io/en/latest/?badge=latest)
+
 Library for encoding/decoding and representing GS1 Electronic Product Codes (EPCs). It supports the following encoding schemes:
 
 - GIAI
@@ -9,6 +11,11 @@ Library for encoding/decoding and representing GS1 Electronic Product Codes (EPC
 - SGLN
 
 The library's goal is to abstract away much of the complexity of converting between tag representations, and make generating tags and barcodes simple.
+
+
+## Docs
+
+https://epcpy-tools.readthedocs.io/en/latest/index.html
 
 
 ### Examples
@@ -48,7 +55,7 @@ Decode an EPC data tag with unknown encoding
 
 ```python
 >>> from epc.utils import decode_epc
->>> tag = decode_epc('341401388000000000000001')
+>>> tag = decode_epc('341401388000000000000001')  # '0x' prefix is optional
 >>> print(tag)
 <epc.schemes.GIAI urn:epc:id:giai:0020000.1>
 ```

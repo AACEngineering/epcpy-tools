@@ -58,7 +58,7 @@ class SGLN(EpcScheme):
     )
 
     SIZE_96 = 96
-    SIZE_195 = 208 # While the size is really 195, set this to 208 because we need a multiple of 16.
+    SIZE_195 = 208  # While the size is really 195, set to 208 because we need a multiple of 16
     TAG_SIZES = (
         SIZE_96, SIZE_195
     )
@@ -124,6 +124,10 @@ class SGLN(EpcScheme):
 
     @property
     def pure_identity_uri(self):
+        """
+        :return: The tag's pure identity URI.
+        :rtype: str
+        """
         self.check_fields()
 
         if self._location_reference_length > 0:
@@ -145,6 +149,10 @@ class SGLN(EpcScheme):
 
     @property
     def tag_uri(self):
+        """
+        :return: The tag's URI.
+        :rtype: str
+        """
         self.check_fields()
 
         if self._location_reference_length > 0:
@@ -167,6 +175,10 @@ class SGLN(EpcScheme):
 
     @property
     def barcode(self):
+        """
+        :return: The barcode representation of the tag.
+        :rtype: str
+        """
         self.check_fields()
 
         check_digit = self.calc_check_digit()
@@ -181,6 +193,10 @@ class SGLN(EpcScheme):
 
     @property
     def barcode_humanized(self):
+        """
+        :return: A human readable barcode representation of the tag.
+        :rtype: str
+        """
         self.check_fields()
 
         check_digit = self.calc_check_digit()
@@ -204,6 +220,19 @@ class SGLN(EpcScheme):
 
     @property
     def values(self):
+        """
+        :return: Dictionary containing:
+
+            * ``size`` (int): the tag's size in bits
+
+            * ``filter`` (int)
+
+            * ``company_prefix`` (str)
+
+            * ``location_reference`` (int)
+
+            * ``extension`` (int *or* str)
+        """
         return {
             'size': self._tag_size,
             'filter': self._tag_filter,
@@ -225,14 +254,22 @@ class SGLN(EpcScheme):
         to select the pallet tag and deselect the item-level tags.
 
         Allowed values for SGLN tags:
-        0 - All Others
-        1 - Reserved
-        2 - Reserved
-        3 - Reserved
-        4 - Reserved
-        5 - Reserved
-        6 - Reserved
-        7 - Reserved
+
+        +-------+-------------------+--------------+
+        | Value | Constant          | Description  |
+        +=======+===================+==============+
+        | 0     | FILTER_ALL        | All Others   |
+        +-------+-------------------+--------------+
+        | 1-7   | FILTER_RESERVED_* | Reserved     |
+        +-------+-------------------+--------------+
+
+        :param tag_filter: The filter value, defaults to ``FILTER_ALL``.
+        :type tag_filter: int
+
+        :raises AttributeError: Filter must be between 0 and 7.
+
+        :return: The SGLN tag object.
+        :rtype: :class:`epc.schemes.SGLN`
         """
         if not (tag_filter >= 0 and tag_filter <= 7):
             raise AttributeError('Filter must be between 0 and 7 (inclusive)')
@@ -246,6 +283,16 @@ class SGLN(EpcScheme):
         same as the GS1 Company Prefix digits within a GS1 GIAI key.
 
         Length corresponds to the number of digits in the company prefix.
+
+        :param company_prefix: GS1 company prefix.
+        :type company_prefix: str, int
+
+        :param company_prefix_length: Number of digits in the company prefix.
+            Required when ``company_prefix`` is an int.
+        :type company_prefix_length: int, optional
+
+        :return: The SGLN tag object.
+        :rtype: :class:`epc.schemes.SGLN`
         """
         if isinstance(company_prefix, str):
             company_prefix_length = len(company_prefix)
@@ -268,6 +315,14 @@ class SGLN(EpcScheme):
         """
         The Location Reference, assigned uniquely by the managing entity to a specific
         physical location.
+
+        :param location_reference: The location reference
+        :type location_reference: int, str
+
+        :raises ValueError: Unable to convert input to an integer.
+
+        :return: The SGLN tag object.
+        :rtype: :class:`epc.schemes.SGLN`
         """
         if isinstance(location_reference, str):
             try:
@@ -283,6 +338,14 @@ class SGLN(EpcScheme):
         The GLN Extension, assigned by the managing entity to an individual unique location. If the
         entire GLN Extension is just a single zero digit, it indicates that the SGLN stands for a
         GLN, without an extension.
+
+        :param extension: The GLN extension
+        :type extension: str, int
+
+        :raises AttributeError: Extension length incorrect.
+
+        :return: The SGLN tag object.
+        :rtype: :class:`epc.schemes.SGLN`
         """
         if isinstance(extension, str):
             if self._tag_size == self.SIZE_96:
@@ -298,7 +361,14 @@ class SGLN(EpcScheme):
 
     def decode_epc(self, hex_string):
         """
-        Decode RFID tag EPC (hex string) and populate the values in the scheme.
+        Decode an encoded tag and populate this object's values from it.
+
+        :param hex_string: Tag data encoded as a hexadecimal string.
+        :type hex_string: str
+
+        :raises ValueError: EPC scheme header does not match input.
+        :raises ValueError: Filter does not match allowed values.
+        :raises ValueError: Supplied ``hex_string`` bit length invalid.
         """
         tag_binary = super().decode_epc(hex_string)
 
@@ -345,7 +415,16 @@ class SGLN(EpcScheme):
 
     def decode_barcode(self, barcode, company_prefix_length):
         """
-        Decode a barcode string and populate values in the scheme.
+        Decode a barcode and populate this object's values from it.
+
+        :param hex_string: Barcode
+        :type hex_string: str
+
+        :param company_prefix_length: Number of digits of the company prefix length
+        :type company_prefix_length: int
+
+        :raises ValueError: Expected barcode header does not match input.
+        :raises AttributeError: Invalid barcode length, or wrong company prefix.
         """
         if barcode[:3] != self.HEADER_BARCODE:
             raise ValueError(
@@ -408,6 +487,12 @@ class SGLN(EpcScheme):
         return (10 - (total % 10) + total) - total
 
     def check_fields(self):
+        """
+        Checks to make sure all components of the tag are present, including ``size``,
+        ``filter``, ``company_prefix``, ``location_reference`` and ``extension``.
+
+        :raises AttributeError: If any components of the tag are missing.
+        """
         super().check_fields()
         if self._tag_size is None:
             raise AttributeError('Tag size not specified')
@@ -417,3 +502,5 @@ class SGLN(EpcScheme):
             raise AttributeError('Company prefix not specified')
         if self._location_reference is None:
             raise AttributeError('Location reference not specified')
+        if self._extension is None:
+            raise AttributeError('Extention not specified')

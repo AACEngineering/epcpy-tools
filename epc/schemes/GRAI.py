@@ -121,6 +121,10 @@ class GRAI(EpcScheme):
 
     @property
     def pure_identity_uri(self):
+        """
+        :return: The tag's pure identity URI.
+        :rtype: str
+        """
         self.check_fields()
 
         if self._asset_type_length > 0:
@@ -140,6 +144,10 @@ class GRAI(EpcScheme):
 
     @property
     def tag_uri(self):
+        """
+        :return: The tag's URI.
+        :rtype: str
+        """
         self.check_fields()
 
         if self._asset_type_length > 0:
@@ -159,6 +167,10 @@ class GRAI(EpcScheme):
 
     @property
     def barcode(self):
+        """
+        :return: The barcode representation of the tag.
+        :rtype: str
+        """
         self.check_fields()
         if self._asset_type_length > 0:
             asset_type = '{:0{}d}'.format(self._asset_type, self._asset_type_length)
@@ -174,6 +186,10 @@ class GRAI(EpcScheme):
 
     @property
     def barcode_humanized(self):
+        """
+        :return: A human readable barcode representation of the tag.
+        :rtype: str
+        """
         self.check_fields()
         if self._asset_type_length > 0:
             asset_type = '{:0{}d}'.format(self._asset_type, self._asset_type_length)
@@ -199,6 +215,19 @@ class GRAI(EpcScheme):
 
     @property
     def values(self):
+        """
+        :return: Dictionary containing:
+
+            * ``size`` (int): the tag's size in bits
+
+            * ``filter`` (int)
+
+            * ``company_prefix`` (str)
+
+            * ``asset_type`` (int)
+
+            * ``serial_number`` (int *or* str)
+        """
         return {
             'size': self._tag_size,
             'filter': self._tag_filter,
@@ -219,14 +248,22 @@ class GRAI(EpcScheme):
         to select the pallet tag and deselect the item-level tags.
 
         Allowed values for GRAI tags:
-        0 - All Others
-        1 - Reserved
-        2 - Reserved
-        3 - Reserved
-        4 - Reserved
-        5 - Reserved
-        6 - Reserved
-        7 - Reserved
+
+        +-------+-------------------+--------------+
+        | Value | Constant          | Description  |
+        +=======+===================+==============+
+        | 0     | FILTER_ALL        | All Others   |
+        +-------+-------------------+--------------+
+        | 1-7   | FILTER_RESERVED_* | Reserved     |
+        +-------+-------------------+--------------+
+
+        :param tag_filter: The filter value, defaults to ``FILTER_ALL``.
+        :type tag_filter: int
+
+        :raises AttributeError: Filter must be between 0 and 7.
+
+        :return: The GRAI tag object.
+        :rtype: :class:`epc.schemes.GRAI`
         """
         if not (tag_filter >= 0 and tag_filter <= 7):
             raise AttributeError('Filter must be between 0 and 7 (inclusive)')
@@ -236,10 +273,19 @@ class GRAI(EpcScheme):
 
     def company_prefix(self, company_prefix, company_prefix_length=None):
         """
-        The GS1 Company Prefix, assigned by GS1 to a managing entity. The Company Prefix is the
-        same as the GS1 Company Prefix digits within a GS1 GIAI key.
+        The GS1 Company Prefix, assigned by GS1 to a managing entity.
 
         Length corresponds to the number of digits in the company prefix.
+
+        :param company_prefix: GS1 company prefix.
+        :type company_prefix: str, int
+
+        :param company_prefix_length: Number of digits in the company prefix.
+            Required when ``company_prefix`` is an int.
+        :type company_prefix_length: int, optional
+
+        :return: The GRAI tag object.
+        :rtype: :class:`epc.schemes.GRAI`
         """
         if isinstance(company_prefix, str):
             company_prefix_length = len(company_prefix)
@@ -261,6 +307,14 @@ class GRAI(EpcScheme):
     def asset_type(self, asset_type):
         """
         The Asset Type, assigned by the managing entity to a particular class of asset.
+
+        :param asset_type: The asset type.
+        :type asset_type: int, str
+
+        :raises ValueError: Unable to convert input to an integer.
+
+        :return: The GRAI tag object.
+        :rtype: :class:`epc.schemes.GRAI`
         """
         if isinstance(asset_type, str):
             try:
@@ -276,6 +330,15 @@ class GRAI(EpcScheme):
         The Serial Number, assigned by the managing entity to an individual object. Because an EPC
         always refers to a specific physical object rather than an asset class, the serial number is
         mandatory in the GRAI-EPC.
+
+        :param serial_number: The serial number.
+        :type serial_number: str, int
+
+        :raises AttributeError: Serial number bit length incorrect.
+        :raises AttributeError: Serial number length incorrect.
+
+        :return: The GRAI tag object.
+        :rtype: :class:`epc.schemes.GRAI`
         """
         if isinstance(serial_number, int):
             if not (serial_number.bit_length() >= 1 and serial_number.bit_length() <= 112):
@@ -297,7 +360,14 @@ class GRAI(EpcScheme):
 
     def decode_epc(self, hex_string):
         """
-        Decode RFID tag EPC (hex string) and populate the values in the scheme.
+        Decode an encoded tag and populate this object's values from it.
+
+        :param hex_string: Tag data encoded as a hexadecimal string.
+        :type hex_string: str
+
+        :raises ValueError: EPC scheme header does not match input.
+        :raises ValueError: Filter does not match allowed values.
+        :raises ValueError: Supplied ``hex_string`` bit length invalid.
         """
         tag_binary = super().decode_epc(hex_string)
 
@@ -346,7 +416,16 @@ class GRAI(EpcScheme):
 
     def decode_barcode(self, barcode, company_prefix_length):
         """
-        Decode a barcode string and populate values in the scheme.
+        Decode a barcode and populate this object's values from it.
+
+        :param hex_string: Barcode
+        :type hex_string: str
+
+        :param company_prefix_length: Number of digits of the company prefix length
+        :type company_prefix_length: int
+
+        :raises ValueError: Expected barcode header does not match input.
+        :raises AttributeError: Invalid barcode length, or wrong company prefix.
         """
         if barcode[:4] != self.HEADER_BARCODE:
             raise ValueError(
@@ -404,6 +483,12 @@ class GRAI(EpcScheme):
         return (10 - (((3 * sum(evens)) + sum(odds)) % 10)) % 10
 
     def check_fields(self):
+        """
+        Checks to make sure all components of the tag are present, including ``size``,
+        ``filter``, ``company_prefix``, ``asset_type`` and ``serial_number``.
+
+        :raises AttributeError: If any components of the tag are missing.
+        """
         super().check_fields()
         if self._tag_size is None:
             raise AttributeError('Tag size not specified')

@@ -11,7 +11,7 @@ GIAI
 
     .. method:: tag_size
 
-        Set the size for the tag.
+        Set the size for the tag. Options are ``SIZE_96`` or ``SIZE_202``.
 
         :param tag_size: Tag size in bits. Defaults to ``SIZE_96``.
         :type tag_size: int
@@ -87,19 +87,19 @@ Headers
 
 .. data:: GIAI.HEADER_96
 
-    GS1 specified hexadecimal header for 96 bit GID tags: ``0x34``.
+    GS1 specified hexadecimal header for 96 bit GIAI tags: ``0x34``.
 
 .. data:: GIAI.HEADER_202
 
-    GS1 specified hexadecimal header for 202 bit GID tags: ``0x38``.
+    GS1 specified hexadecimal header for 202 bit GIAI tags: ``0x38``.
 
 
-.. data:: GIAI.GID_96
+.. data:: GIAI.GIAI_96
 
-    Human readable GS1 specified header for 96 bit GID tags: ``giai-96``.
+    Human readable GS1 specified header for 96 bit GIAI tags: ``giai-96``.
 
 
-.. data:: GIAI.GID_202
+.. data:: GIAI.GIAI_202
 
-    Human readable GS1 specified header for 202 bit GID tags: ``giai-202``.
+    Human readable GS1 specified header for 202 bit GIAI tags: ``giai-202``.
 

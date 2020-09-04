@@ -7,7 +7,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
 
 setup(
     name='epc-encoding-utils',
-    version='1.0',
+    version=__import__('epc').__version__,
     description='Library for encoding/decoding and representing GS1 Electronic Product Codes',
     long_description=README,
     long_description_content_type='text/markdown',

@@ -23,6 +23,11 @@ author = 'AAC Engineering'
 
 import epc
 
+# The short X.Y version
+version = '.'.join(epc.__version__.split('.')[0:2])
+# The full version, including alpha/beta/rc tags
+release = epc.__version__
+
 
 # -- General configuration ---------------------------------------------------
 
