@@ -45,7 +45,7 @@ GIAI
         :emphasize-lines: 5, 9
 
         >>> tag = GIAI()
-        >>> tag.company_prefix('00200').asset_reference(50)
+        >>> tag.company_prefix('000200').asset_reference(50)
 
         # Hexadecimal
         >>> hex(tag)

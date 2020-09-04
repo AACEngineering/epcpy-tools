@@ -30,3 +30,4 @@ The project is licensed under the Apache v2 License.
    quickstart
    schemes/index
    utilities
+   examples
