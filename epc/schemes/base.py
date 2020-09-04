@@ -16,11 +16,11 @@ class EpcScheme:
 
     _tag_size = None
 
-    def __init__(self, epc=None, barcode=None, company_prefix=None):
+    def __init__(self, epc=None, barcode=None, company_prefix_length=None):
         if epc is not None:
             self.decode_epc(epc)
         elif barcode is not None:
-            self.decode_barcode(barcode, company_prefix)
+            self.decode_barcode(barcode, company_prefix_length)
 
     def __str__(self):
         return self.pure_identity_uri
@@ -124,7 +124,7 @@ class EpcScheme:
         self._tag_size = tag_length
         return encode_int(tag_data, tag_length)
 
-    def decode_barcode(self, barcode, company_prefix):
+    def decode_barcode(self, barcode, company_prefix_length):
         """
         Decode a barcode string and populate values in the scheme.
         """
