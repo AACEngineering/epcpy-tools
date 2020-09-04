@@ -19,3 +19,4 @@ __pycache__
 *.mo
 .coverage
 venv/
+dist/

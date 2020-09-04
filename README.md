@@ -2,6 +2,11 @@ EPC Encoding Utils
 ------------------
 
 [![Documentation Status](https://readthedocs.org/projects/epcpy-tools/badge/?version=latest)](https://epcpy-tools.readthedocs.io/en/latest/?badge=latest)
+[![](https://img.shields.io/pypi/v/epc-encoding-utils.svg)](https://pypi.org/project/epc-encoding-utils/)
+
+```
+pip install epc-encoding-utils
+```
 
 Library for encoding/decoding and representing GS1 Electronic Product Codes (EPCs). It supports the following encoding schemes:
 
