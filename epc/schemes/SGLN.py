@@ -483,8 +483,7 @@ class SGLN(EpcScheme):
             else:
                 odds.append(int(char))
 
-        total = (sum(evens) * 3) + sum(odds)
-        return (10 - (total % 10) + total) - total
+        return (10 - (((3 * sum(evens)) + sum(odds)) % 10)) % 10
 
     def check_fields(self):
         """
