@@ -190,7 +190,7 @@ class GID(EpcScheme):
         :type serial_number: str, int
 
         :raises ValueError: Unable to convert string to an integer.
-        :raises AttributeError: Input outside valid range (0 and 68719476735).
+        :raises AttributeError: Input outside valid range (0 to 68719476735).
 
         :return: The GID tag object.
         :rtype: :class:`epc.schemes.GID`
