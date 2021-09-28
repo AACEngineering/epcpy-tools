@@ -150,3 +150,8 @@ class SGLNTest(TestCase):
 
         epc = SGLN(barcode='4140000010000014254!"%&\'()*+,-./012', company_prefix_length=6)
         self.assertEqual(hex(epc), '0x39180000400002851254c9d42954ad62d5cbd831640000000000')
+
+    def test_check_digit(self):
+        """Test SGLN Check Digit Calcuation"""
+        epc = SGLN().company_prefix('2488320').location_reference(22830).extension(0)
+        self.assertEqual(epc.calc_check_digit(), 0)
