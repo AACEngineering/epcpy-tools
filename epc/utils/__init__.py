@@ -23,13 +23,15 @@ epc_encoding_types = {
 }
 
 epc_encoding_map = {
+    0x30: schemes.SGTIN,
     0x32: schemes.SGLN,
     0x33: schemes.GRAI,
     0x34: schemes.GIAI,
     0x35: schemes.GID,
-    0x36: schemes.SGLN,
+    0x36: schemes.SGTIN,
     0x37: schemes.GRAI,
     0x38: schemes.GIAI,
+    0x39: schemes.SGLN,
 }
 
 

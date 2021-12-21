@@ -4,10 +4,13 @@ barcode_encoding_map = {
     '8003': schemes.GRAI,
     '8004': schemes.GIAI,
     '0088': schemes.SGLN,
+    '01': schemes.SGTIN,
 }
 
 
 def get_barcode_header(barcode_string):
+    if barcode_string[:2] == '01':
+        return barcode_string[:2]
     return barcode_string[:4]
 
 

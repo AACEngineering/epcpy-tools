@@ -32,5 +32,5 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
     ],
-    keywords='epc,rfid,gid,giai,gid,grai,sgln,encoding,decoding,barcodes',
+    keywords='epc,rfid,gid,giai,gid,grai,sgln,sgtin,encoding,decoding,barcodes',
 )

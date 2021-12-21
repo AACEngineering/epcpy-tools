@@ -138,3 +138,24 @@ SGLN Tags
 
     >>> my_tag.company_prefix('001234').location_reference(15).extension(1000)
     <epc.schemes.SGLN urn:epc:id:sgln:001234.000015.1000>
+
+
+SGTIN Tags
+----------
+
+:class:`epc.schemes.SGTIN`
+
+.. code-block:: python
+
+    >>> from epc.schemes import SGTIN
+
+    >>> my_tag = SGTIN()
+
+    >>> my_tag.company_prefix('001234').item_reference(15).serial_number(1000)
+    <epc.schemes.SGTIN urn:epc:id:sgtin:001234.0000015.1000>
+
+    # Create a tag from a GTIN
+    >>> my_tag = SGTIN()
+    >>> my_tag.decode_gtin('80614141123458', company_prefix_length=7, serial_number=6789)
+    >>> my_tag.tag_uri
+    'urn:epc:tag:sgtin-96:0.0614141.812345.6789'
