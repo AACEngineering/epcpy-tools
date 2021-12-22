@@ -14,6 +14,7 @@ Library for encoding/decoding and representing GS1 Electronic Product Codes (EPC
 - GID
 - GRAI
 - SGLN
+- SGTIN
 
 The library's goal is to abstract away much of the complexity of converting between tag representations, and make generating tags and barcodes simple.
 
