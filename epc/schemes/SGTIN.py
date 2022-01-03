@@ -370,12 +370,12 @@ class SGTIN(EpcScheme):
         :rtype: :class:`epc.schemes.SGTIN`
         """
         if isinstance(serial_number, int):
-            if not (serial_number.bit_length() >= 1 and serial_number.bit_length() <= 112):
+            if not (serial_number.bit_length() >= 0 and serial_number.bit_length() <= 112):
                 raise AttributeError(
-                    'Serial number bit length must be be between 1 and 112 (inclusive)'
+                    'Serial number bit length must be be between 0 and 112 (inclusive)'
                 )
         elif isinstance(serial_number, str):
-            if not (len(serial_number) > 0 and len(serial_number) <= 16):
+            if not (len(serial_number) >= 1 and len(serial_number) <= 16):
                 raise AttributeError(
                     'Serial number length must be be between 1 and 16 (inclusive)'
                 )

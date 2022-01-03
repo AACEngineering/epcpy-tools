@@ -1,6 +1,11 @@
 Changelog
 ---------
 
+### v1.3
+
+- SGTIN-96: Allow serial numbers with the value of 0.
+
+
 ### v1.2
 
 - Added SGTIN encoding support.
