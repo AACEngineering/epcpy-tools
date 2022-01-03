@@ -26,6 +26,12 @@ class SGTINTest(TestCase):
         self.assertEqual(epc.gtin, '13200000000008')
         self.assertEqual(hex(epc), '0x30012a05f200004000000001')
 
+        epc.serial_number(0)
+        self.assertEqual(epc.pure_identity_uri, 'urn:epc:id:sgtin:320000000000.1.0')
+        self.assertEqual(epc.tag_uri, 'urn:epc:tag:sgtin-96:0.320000000000.1.0')
+        self.assertEqual(epc.gtin, '13200000000008')
+        self.assertEqual(hex(epc), '0x30012a05f200004000000000')
+
         epc.company_prefix('32000000').item_reference('25000').serial_number(51681623)
         self.assertEqual(epc.pure_identity_uri, 'urn:epc:id:sgtin:32000000.25000.51681623')
         self.assertEqual(epc.tag_uri, 'urn:epc:tag:sgtin-96:0.32000000.25000.51681623')
@@ -47,6 +53,11 @@ class SGTINTest(TestCase):
         epc = SGTIN(epc='30012a05f200004000000001')
         self.assertEqual(epc.pure_identity_uri, 'urn:epc:id:sgtin:320000000000.1.1')
         self.assertEqual(epc.tag_uri, 'urn:epc:tag:sgtin-96:0.320000000000.1.1')
+        self.assertEqual(epc.gtin, '13200000000008')
+
+        epc = SGTIN(epc='0x30012a05f200004000000000')
+        self.assertEqual(epc.pure_identity_uri, 'urn:epc:id:sgtin:320000000000.1.0')
+        self.assertEqual(epc.tag_uri, 'urn:epc:tag:sgtin-96:0.320000000000.1.0')
         self.assertEqual(epc.gtin, '13200000000008')
 
         epc = SGTIN(epc='3010f42400186a0003149957')
