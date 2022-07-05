@@ -1,6 +1,11 @@
 Changelog
 ---------
 
+### v1.4
+
+- Fixed `decode_barcode()` not correctly detecting SGLN encodings.
+
+
 ### v1.3
 
 - SGTIN-96: Allow serial numbers with the value of 0.

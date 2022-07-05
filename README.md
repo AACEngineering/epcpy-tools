@@ -74,3 +74,11 @@ This library was built based on the Tag Data Standard v1.11.
 ```shell
 python -m unittest discover -s epc/schemes/tests
 ```
+
+
+### Deploy To PyPI
+
+```shell
+python setup.py sdist bdist_wheel
+twine upload dist/*
+```
